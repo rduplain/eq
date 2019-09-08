@@ -44,16 +44,16 @@ end
 -- Update, on loop.
 function love.update()
   -- TODO: Acquire data, 0 to 1 for each band.
-  spectrum = {0.068, -- 1
-              0.2,   -- 2
-              0.31,  -- 3
-              0.39,  -- 4
-              0.45,  -- 5
-              0.6,   -- 6
-              0.712, -- 7
-              0.799, -- 8
-              0.9,   -- 9
-              0.95}  -- 10
+  spectrum = {math.random(),
+              math.random(),
+              math.random(),
+              math.random(),
+              math.random(),
+              math.random(),
+              math.random(),
+              math.random(),
+              math.random(),
+              math.random()}
 end
 
 -- Draw, on loop.
