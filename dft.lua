@@ -8,20 +8,27 @@ local dft = {}
 -- Only support transform from time to frequency, no inverse.
 -- Only support real-valued input.
 --
+-- For applications discarding bins, an optional optimization is available to
+-- skip calculations of output bins outside the desired range of start_bin to
+-- end_bin.
+--
 -- DFT:
 -- https://en.wikipedia.org/wiki/Discrete_Fourier_transform
 --
 -- Visualize each step:
 -- https://jackschaedler.github.io/circles-sines-signals/dft_walkthrough.html
-function dft.transform(samples)
+function dft.transform(samples, start_bin, end_bin)
   local n = #samples
   local real = {}
   local imag = {}
 
+  start_bin = start_bin or 0
+  end_bin = end_bin or n-1
+
   if n == 0 then
     return real, imag
   else
-    for k = 0, n-1 do -- output
+    for k = start_bin, end_bin do -- output
       local sum_real = 0
       local sum_imag = 0
       for t = 0, n-1 do -- input
@@ -43,16 +50,22 @@ end
 -- Ignore 0th bin, the DC bin, as it has no frequency content.
 -- Ignore bins n/2+1 to n, as these are past the Nyquist limit.
 --
+-- When using the optional optimization available with `transform`, provide the
+-- same start_bin and end_bin values here to `bins`.
+--
 -- Determining frequencies of bins:
 -- https://jackschaedler.github.io/circles-sines-signals/dft_frequency.html
-function dft.bins(real, imag)
+function dft.bins(real, imag, start_bin, end_bin)
   assert(#real == #imag)
   assert(#real > 0)
 
   local n = #real
   local magnitude = {}
 
-  for k = 1, n/2 do
+  start_bin = start_bin or 1
+  end_bin = end_bin or n/2
+
+  for k = start_bin, end_bin do
     magnitude[k] = math.sqrt(real[k] * real[k] + imag[k] * imag[k])
   end
 
@@ -110,7 +123,14 @@ end
 -- Dump transform of given sampled signal.
 function dft.dump_transform(samples, title)
   print(title)
-  local bins = dft.bins(dft.transform(samples))
+
+  local n = #samples
+  local start_bin = 1
+  local end_bin = n/2
+
+  local real, imag = dft.transform(samples, start_bin, end_bin)
+  local bins = dft.bins(real, imag, start_bin, end_bin)
+
   for k, magnitude in ipairs(bins) do
     print(k.."\t"..magnitude)
   end
