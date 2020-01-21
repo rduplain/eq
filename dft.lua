@@ -9,26 +9,26 @@ local dft = {}
 -- Only support real-valued input.
 --
 -- For applications discarding bins, an optional optimization is available to
--- skip calculations of output bins outside the desired range of start_bin to
--- end_bin.
+-- skip calculations of output bins outside the desired range of _start_bin to
+-- _end_bin.
 --
 -- DFT:
 -- https://en.wikipedia.org/wiki/Discrete_Fourier_transform
 --
 -- Visualize each step:
 -- https://jackschaedler.github.io/circles-sines-signals/dft_walkthrough.html
-function dft.transform(samples, start_bin, end_bin)
+function dft.transform(samples, _start_bin, _end_bin)
   local n = #samples
   local real = {}
   local imag = {}
 
-  start_bin = start_bin or 0
-  end_bin = end_bin or n-1
+  _start_bin = _start_bin or 0
+  _end_bin = _end_bin or n-1
 
   if n == 0 then
     return real, imag
   else
-    for k = start_bin, end_bin do -- output
+    for k = _start_bin, _end_bin do -- output
       local sum_real = 0
       local sum_imag = 0
       for t = 0, n-1 do -- input
@@ -51,21 +51,21 @@ end
 -- Ignore bins n/2+1 to n, as these are past the Nyquist limit.
 --
 -- When using the optional optimization available with `transform`, provide the
--- same start_bin and end_bin values here to `bins`.
+-- same _start_bin and _end_bin values here to `bins`.
 --
 -- Determining frequencies of bins:
 -- https://jackschaedler.github.io/circles-sines-signals/dft_frequency.html
-function dft.bins(real, imag, start_bin, end_bin)
+function dft.bins(real, imag, _start_bin, _end_bin)
   assert(#real == #imag)
   assert(#real > 0)
 
   local n = #real
   local magnitude = {}
 
-  start_bin = start_bin or 1
-  end_bin = end_bin or n/2
+  _start_bin = _start_bin or 1
+  _end_bin = _end_bin or n/2
 
-  for k = start_bin, end_bin do
+  for k = _start_bin, _end_bin do
     magnitude[k] = math.sqrt(real[k] * real[k] + imag[k] * imag[k])
   end
 
