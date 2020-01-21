@@ -14,7 +14,7 @@ lua: lua-command
 	@$(LUA)
 
 lint: luarocks-install
-	@$(LUA_PREFIX)/bin/luacheck \
+	@$(LUA_PREFIX)/bin/luacheck --no-color \
 		--allow-defined-top \
 		--globals love \
 		--ignore _ \
