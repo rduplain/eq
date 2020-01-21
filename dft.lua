@@ -59,6 +59,33 @@ function dft.bins(real, imag)
   return magnitude
 end
 
+-- Apply generalized Hann/Hamming window to sampled signal.
+--
+-- Use 0-index for input array.
+-- Modify array in place.
+--
+-- https://en.wikipedia.org/wiki/Window_function#Hann_and_Hamming_windows
+function dft.window(samples, a)
+  local n = #samples
+
+  for t = 0, n-1 do
+    local coef = a - (1 - a) * math.cos(2 * math.pi * t / (n-1))
+    samples[t] = coef * samples[t]
+  end
+
+  return samples
+end
+
+-- Apply Hann window to sampled signal.
+function dft.hann(samples)
+  return dft.window(samples, 0.5)
+end
+
+-- Apply Hamming window to sampled signal.
+function dft.hamming(samples)
+  return dft.window(samples, 25/46)
+end
+
 -- Generate test tone with n samples and given period.
 --
 -- Period indicates number of periods within the sample length.
@@ -89,7 +116,7 @@ function dft.dump_transform(samples, title)
   end
 end
 
--- Test tones of various periods.
+-- Test tones of various periods and windows.
 function dft.test()
   local n = 22
 
@@ -98,8 +125,12 @@ function dft.test()
   end
 
   for _, p in ipairs({3, 2.7}) do
-    dft.dump_samples(tone(p), "## tone w/period: "..p.." ##")
-    dft.dump_transform(tone(p), "## period: "..p.." ##")
+    dft.dump_samples(tone(p),           "## tone w/period: "..p.." ##")
+    dft.dump_samples(dft.hann(tone(p)), "## tone w/period: "..p..", Hann ##")
+
+    dft.dump_transform(tone(p),              "## period: "..p.." ##")
+    dft.dump_transform(dft.hann(tone(p)),    "## period: "..p..", Hann ##")
+    dft.dump_transform(dft.hamming(tone(p)), "## period: "..p..", Hamming ##")
   end
 end
 
