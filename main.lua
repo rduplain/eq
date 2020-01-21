@@ -25,13 +25,11 @@ spectrum = {}        -- Spectrum data.
 --------------------------------
 -- Globals: love.resize(w, h) --
 --------------------------------
-window_w = nil       -- Width of window.
 window_h = nil       -- Height of window.
 
 unit_x = nil         -- Unit size in x dimension.
 unit_y = nil         -- Unit size in y dimension.
 side_padding = nil   -- Pixel padding on each side of window.
-top_padding = nil    -- Pixel padding on top of window.
 
 -- Initialize.
 function love.load()
@@ -89,10 +87,10 @@ end
 
 -- Callback, on window resize.
 function love.resize(w, h)
-  window_w = w
+  _ = w
   window_h = h
 
-  unit_x, unit_y, side_padding, top_padding = measure_window(w, h)
+  unit_x, unit_y, side_padding, _ = measure_window(w, h)
 end
 
 -- Scale size of unit in two dimensions, with padding on top and side.
