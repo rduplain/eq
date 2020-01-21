@@ -2,6 +2,9 @@
 game: love-command lint
 	@love .
 
+test: lint
+	lua -e 'require("dft").test()'
+
 MAKEFILE := $(lastword $(MAKEFILE_LIST))
 
 include .Makefile.d-init.mk
