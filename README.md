@@ -8,6 +8,8 @@ With [LÖVE](https://love2d.org/) 11.3:
 love .
 ```
 
+![eq](doc/eq.gif)
+
 
 ### Signal Processing
 
