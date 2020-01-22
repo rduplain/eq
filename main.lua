@@ -18,6 +18,7 @@ BIT_DEPTH = 16       -- Number of bits of information in each mic sample.
 CHANNELS = 1         -- Mono: 1 channel.
 
 BIN_CUTOFF = 2       -- Frequency power considered "max"; tunes sensitivity.
+BIN_DECAY = 0.3      -- Amount to reduce bin's magnitude after drop in signal.
 
 SPACER = 1           -- Number of units of space between blocks.
 SIZE_X = 10          -- Number of units for width of blocks.
@@ -103,7 +104,12 @@ function love.update()
       else
         bin = 10 * bin / BIN_CUTOFF
       end
-      spectrum[i] = bin
+
+      if spectrum[i] > bin then
+        spectrum[i] = math.max(spectrum[i] - BIN_DECAY, bin)
+      else
+        spectrum[i] = bin
+      end
     end
   end
 end
