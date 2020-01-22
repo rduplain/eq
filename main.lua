@@ -67,6 +67,9 @@ function love.load()
   end
 
   -- Find mic and set its recording buffer size to number of bins.
+  -- Note: Sound card may have a recording device to monitor its own output.
+  --       This may be preferred, and is especially useful for testing.
+  --       Set `mic = devices[x]` to a higher index as available.
   local devices = love.audio.getRecordingDevices()
   assert(#devices > 0)
   mic = devices[1]
