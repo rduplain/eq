@@ -94,7 +94,7 @@ function love.update()
       samples[i] = data:getSample(i)
     end
 
-    local real, imag = dft.transform(dft.hann(samples), 1, BANDS)
+    local real, imag = dft.transform(samples, 1, BANDS)
     local bins = dft.bins(real, imag, 1, BANDS)
 
     for i = 1, BANDS do
