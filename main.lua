@@ -10,6 +10,7 @@ BLOCKS = 10          -- Number of blocks to stack in representing a band.
 
 BINS = BANDS         -- Number of frequency bins in data visualization.
 BINS = BINS + 1      -- Add bin to Fourier output in order to drop DC 0Hz bin.
+BINS = BINS + 1      -- Add bin to drop highest frequency bin from visual.
 BINS = BINS * 2      -- Double to allow dropping the half above Nyquist limit.
 
 SAMPLE_RATE = 22050  -- Mic sample rate, Hz; determines bin values.
